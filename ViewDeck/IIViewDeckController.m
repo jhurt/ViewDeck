@@ -87,6 +87,7 @@ __typeof__(h) __h = (h);                                    \
 #import <QuartzCore/QuartzCore.h>
 #import <objc/message.h>
 #import "IIWrapController.h"
+#import "WIViewDeckPanGestureRecognizer.h"
 
 enum {
     IIViewDeckNoSide = 0,
@@ -152,7 +153,6 @@ static NSTimeInterval durationToAnimate(CGFloat pointsToAnimate, CGFloat velocit
 @property (nonatomic, readonly) CGRect referenceBounds;
 @property (nonatomic, readonly) CGRect centerViewBounds;
 @property (nonatomic, readonly) CGRect sideViewBounds;
-@property (nonatomic, retain) NSMutableArray* panners;
 @property (nonatomic, assign) CGFloat originalShadowRadius;
 @property (nonatomic, assign) CGFloat originalShadowOpacity;
 @property (nonatomic, retain) UIColor* originalShadowColor;
@@ -2390,7 +2390,8 @@ static NSTimeInterval durationToAnimate(CGFloat pointsToAnimate, CGFloat velocit
 - (void)addPanner:(UIView*)view {
     if (!view) return;
     
-    UIPanGestureRecognizer* panner = II_AUTORELEASE([[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panned:)]);
+    WIViewDeckPanGestureRecognizer* panner = II_AUTORELEASE([[WIViewDeckPanGestureRecognizer alloc] initWithTarget:self action:@selector(panned:)]);
+    panner.viewDeckController = self;
     panner.cancelsTouchesInView = NO;
     panner.delegate = self;
     [view addGestureRecognizer:panner];
